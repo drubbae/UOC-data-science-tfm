@@ -4,11 +4,22 @@ import json
 import csv
 from flatten_json import flatten
 
+debug = False
+test = True
+
 # path jsonl files
-directory = r'D:\master\data science\semestre 4\M2.979 - tfm\data\influencers'
+if test:
+    input_path = r'D:\master\data science\semestre 4\M2.979 - tfm\data\influencers\test'
+else:
+    input_path = r'D:\master\data science\semestre 4\M2.979 - tfm\data\influencers'
 
 # now we will open a file for writing
-data_file = open(r'D:\master\data science\semestre 4\M2.979 - tfm\data\01_raw_influencers_2_method.csv', mode='a', newline='', encoding='utf-8')
+if test:
+    output_path = r'D:\master\data science\semestre 4\M2.979 - tfm\data\01_data_test.csv'
+else:
+    output_path = r'D:\master\data science\semestre 4\M2.979 - tfm\data\01_data.csv'
+
+data_file = open(output_path, mode='a', newline='', encoding='utf-8')
 
 # create the csv writer object
 csv_writer = csv.writer(data_file)
@@ -40,8 +51,8 @@ csv_writer.writerow([
 ])
 
 # reading all jsonl files
-files = [f for f in glob.glob(directory + "**/*.jsonl", recursive=True)]
-i=0
+files = [f for f in glob.glob(input_path + "**/*.jsonl", recursive=True)]
+
 for f in files:
     with open(f, mode='r') as F:
         for line in F:
@@ -50,7 +61,7 @@ for f in files:
             data_1 = flatten(data)
             print(line, data_1)
             #creating csv files
-            with open(r'D:\master\data science\semestre 4\M2.979 - tfm\data\01_raw_influencers_2_method.csv', mode='a', newline='', encoding='utf-8') as f:
+            with open(output_path, mode='a', newline='', encoding='utf-8') as f:
                 csv_writer = csv.writer(f)
                 #headers should be the Key values from json files that make Coulmn header
                 csv_writer.writerow([
